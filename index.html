@@ -148,7 +148,7 @@
   .gallery .slot{min-height:130px;font-size:11px;padding:14px;}
 
   /* ---------- retrieval atlas cards ---------- */
-  .atlas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:34px 26px;margin:24px 0 6px;}
+  .atlas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:34px 26px;margin:24px 0 6px;}
   .atlas-card .shot{min-height:0;aspect-ratio:16/10;font-size:11px;padding:16px;}
   .atlas-card figure{margin:0;}
   .atlas-card .cap{font-family:"IBM Plex Mono",monospace;font-size:13.5px;line-height:1.62;margin-top:13px;color:#4c4030;}
@@ -220,9 +220,7 @@
     <div class="teaser">
       <p class="tagline">I know this archive by heart — which is exactly why I notice the moment the machine sees a chili that's really just a tattoo.</p>
       <figure style="margin:0;">
-        <div class="frame">
-          <div class="slot"><span><b>[ TEASER IMAGE ]</b><br />drop a contact sheet of the corpus here<br />(a grid of ~20 thumbnails works nicely)<br />swap this <code>.slot</code> div for <code>&lt;img src="assets/teaser.jpg"&gt;</code></span></div>
-        </div>
+        <div class="frame"><img src="assets/teaser.jpg" alt="Corpus contact sheet — a slice of the archive" /></div>
         <figcaption>A slice of the archive — home kitchens in India and Germany, restaurant plates, drinks, desserts, half-made things, and the fakes I planted on purpose.</figcaption>
       </figure>
     </div>
@@ -257,7 +255,7 @@
     <p>254 photos I shot across two countries: home-cooked meals, restaurant food, drinks, desserts, and plenty of raw or half-made food. The India/Germany split isn't incidental — it's where the model's habit of guessing a cuisine becomes something I can actually catch and write down.</p>
 
     <h3>Why there are fakes in here</h3>
-    <p>Mixed in with the real meals are <strong>food lookalikes and food costumes</strong> — things that look like food but aren't: a taco costume, candles moulded as macarons, a little ceramic keychain shaped like a snack. I didn't include these by accident. They're the tripwires. They're the exact spot where reading the pixels and reading the photo <em>have</em> to come apart, because the difference between "food" and "a picture that refers to food" lives in what you know, not in the frame. Both the caption format (§3) and the dossier (§8) are built around them.</p>
+    <p>Mixed in with the real meals are <strong>food lookalikes and food costumes</strong> — things that look like food but aren't: a taco costume, candles moulded as macarons, a little ceramic keychain shaped like a snack. I didn't include these by accident. They're the tripwires. They're the exact spot where reading the pixels and reading the photo <em>have</em> to come apart, because the difference between "food" and "a picture that refers to food" lives in what you know, not in the frame. Both the caption format (§3) and the dossier (§6) are built around them.</p>
 
     <div class="note">
       <div class="hd">The premise, in one line</div>
@@ -382,64 +380,57 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
 <!-- RESULTS: RETRIEVAL ATLAS -->
 <section>
   <div class="wrap">
-    <p class="sec-no">§ 4 · Results — retrieval atlas <span class="dim">— ten queries, wins and misses</span></p>
-    <h2>Reading the embedding space out loud</h2>
-    <p>Ten queries run against the Level&nbsp;1 SigLIP baseline, chosen to probe colour, texture, cuisine, preparation stage, composition, and the trick shots separately. Scores are SigLIP's logit-scaled similarity; the failures are the good bit — they're where similarity grabbed a colour or a shape instead of the meaning I actually asked for.</p>
-    <div class="fill"><b>▸ TO FILL — one screenshot per card.</b> For each query, screenshot the Gradio result strip and drop it into <code>assets/atlas1.jpg … atlas10.jpg</code> (replace the dashed <code>.shot</code> box with <code>&lt;img src="assets/atlasN.jpg"&gt;</code>). Then replace each red <span class="todo">‹verdict + score range›</span> token with the real verdict and numbers from that run. The reasoning under each is already written — adjust it if the run surprises me.</div>
+    <p class="sec-no">§ 4 · Results — the atlas <span class="dim">— ten queries, search to grounded answer</span></p>
+    <h2>Reading the archive out loud, query by query</h2>
+    <p>Ten queries run through <strong>Route&nbsp;A</strong> end to end — the retrieval and the grounded answer it produces. Each card shows the app's own screenshot, the answer the model wrote using <em>only</em> the retrieved captions, and a verdict: <span class="vtag success">success</span> (answer right, images relevant), <span class="vtag partial">partial</span> (answer right but retrieval mixed, or slightly off-target), or <span class="vtag failure">failure</span> (answer wrong or unhelpful).</p>
+    <p>One thing to notice across all ten: every card carries a <em>low-confidence</em> banner. That's not ten failures — SigLIP's text–image cosines sit structurally low (≈&nbsp;0.09–0.16), so the 0.20 warning threshold, which suits text–text scores, trips on everything. It's the same scale mismatch that shows up in §5, surfacing in the interface.</p>
 
     <div class="atlas-grid">
 
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas1.jpg<br />Gradio result strip for Q1</span></div></div>
-        <div class="cap"><span class="qn">Q1</span> <span class="q">"fresh green salad with raw vegetables"</span> · <span class="todo">‹likely hit · scores›</span> · Heavy on colour and texture — SigLIP should cluster tight on green and leafy. If the top results are all salads, it's matching the whole scene's colour signature, which this query hands it cleanly.</div>
+        <div class="frame"><img src="assets/atlas1.jpg" alt="Q1 "fresh green salad with raw vegetables" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q1</span> <span class="q">"fresh green salad with raw vegetables"</span> <span class="vtag partial">partial</span> · top 0.09<br /><b>Answer:</b> names a salad with greens, mushrooms and croutons. The top hit is a real salad and the raw-vegetable leaf platter is spot on — but a stir-fry and a pasta slip into the four. The whole-scene colour signature pulls in anything green and leafy, salad or not.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas2.jpg<br />Gradio result strip for Q2</span></div></div>
-        <div class="cap"><span class="qn">Q2</span> <span class="q">"South Indian breakfast"</span> · <span class="todo">‹likely low-confidence miss · scores›</span> · A cuisine name with almost no consistent look — idli, dosa and upma share nothing visually. Tests whether pixels alone carry <em>cuisine</em>; if scores sit low, that's the gap Route B fills later.</div>
+        <div class="frame"><img src="assets/atlas2.jpg" alt="Q2 "suth indian breakfast" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q2</span> <span class="q">"suth indian breakfast"</span> <span class="vtag success">success</span> · top 0.16<br /><b>Answer:</b> "Dosa, sambar, and chutney. South Indian." I'd bet pixels would struggle on a cuisine name, but dosa's distinctive form gave Route A its highest score anywhere (0.16), and even the “suth” typo didn't throw it. Overturns my guess that captions would win this one.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas3.jpg<br />Gradio result strip for Q3</span></div></div>
-        <div class="cap"><span class="qn">Q3</span> <span class="q">"dough or batter before cooking"</span> · <span class="todo">‹verdict · scores›</span> · A prep-stage query over pale, smooth, low-texture surfaces — easy to confuse with yoghurt or cream. Watch whether the misses are all the same "pale blob" shape, which would say SigLIP is reading texture, not stage.</div>
+        <div class="frame"><img src="assets/atlas3.jpg" alt="Q3 "dough or batter before cooking" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q3</span> <span class="q">"dough or batter before cooking"</span> <span class="vtag success">success</span> · top 0.11<br /><b>Answer:</b> identifies rolled-out cinnamon rolls as dough. Every retrieved image is pre-cooking — raw rolls, batter in a blender, prep ingredients, uncooked chunks. The pale, uncooked look turned out to be a stronger cue than I expected the pixels to catch.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas4.jpg<br />Gradio result strip for Q4</span></div></div>
-        <div class="cap"><span class="qn">Q4</span> <span class="q">"something crunchy and fried"</span> · <span class="todo">‹likely hit · scores›</span> · Texture-led — golden, high-contrast crust. Should hit, but roasted (not fried) items likely sneak in on the same colour, which is the useful part: it shows the model reads <em>appearance</em> of fried, not the cooking method.</div>
+        <div class="frame"><img src="assets/atlas4.jpg" alt="Q4 "something crunchy and fried" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q4</span> <span class="q">"something crunchy and fried"</span> <span class="vtag partial">partial</span> · top 0.13<br /><b>Answer:</b> quotes bhel — "puffed rice … golden-brown and crunchy." Genuinely fried items (a cutlet, a pakora) were retrieved, but the answer picked the puffed-rice mix — crunchy, not fried. The model read the adjective and let the cooking method slide.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas5.jpg<br />Gradio result strip for Q5</span></div></div>
-        <div class="cap"><span class="qn">Q5</span> <span class="q">"a warm orange curry"</span> · <span class="todo">‹likely colour-over-meaning miss · scores›</span> · Colour dominates the whole-image embedding, so this probably drags in anything orange — soup, dal, maybe a mango drink. A textbook case of colour outvoting category; a clean one to document as a miss.</div>
+        <div class="frame"><img src="assets/atlas5.jpg" alt="Q5 "a warm orange curry" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q5</span> <span class="q">"a warm orange curry"</span> <span class="vtag success">success</span> · top 0.12<br /><b>Answer:</b> lists three curries by their warm colour phrases. I predicted colour would drag in “anything orange” — soup, dal, a mango drink. Instead all four are real curries in warm tones. Colour held to category here, so the miss I expected didn't happen.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas6.jpg<br />Gradio result strip for Q6</span></div></div>
-        <div class="cap"><span class="qn">Q6</span> <span class="q">"dessert on a white plate"</span> · <span class="todo">‹verdict · scores›</span> · Two constraints at once — category plus setting. If white-plate savoury dishes rank above desserts on darker plates, the plate is steering the match more than the food, which the compound query is designed to expose.</div>
+        <div class="frame"><img src="assets/atlas6.jpg" alt="Q6 "dessert on a white plate" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q6</span> <span class="q">"dessert on a white plate"</span> <span class="vtag success">success</span> · top 0.13<br /><b>Answer:</b> a chocolate-and-cream confection with a biscotti-like treat. A compound query — category plus setting. Three of four sit on pale plates; the cheesecake on dark slate is the honest edge case where “white plate” slipped.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas7.jpg<br />Gradio result strip for Q7</span></div></div>
-        <div class="cap"><span class="qn">Q7</span> <span class="q">"a cold drink with ice"</span> · <span class="todo">‹verdict · scores›</span> · Glass and transparency — reflective, see-through regions SigLIP handles unevenly. Worth checking whether it finds the drink or just locks onto the table and background behind the glass.</div>
+        <div class="frame"><img src="assets/atlas7.jpg" alt="Q7 "a cold drink with ice" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q7</span> <span class="q">"a cold drink with ice"</span> <span class="vtag success">success</span> · top 0.14<br /><b>Answer:</b> cites iced tea and a lime-and-mint beverage. All four retrieved are cold drinks. Transparency and reflective glassware, which I'd flagged as a risk for the pixel route, gave it no trouble at all.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas8.jpg<br />Gradio result strip for Q8</span></div></div>
-        <div class="cap"><span class="qn">Q8</span> <span class="q">"street food stall"</span> · <span class="todo">‹verdict · scores›</span> · A scene, not a dish — this rides on background cues (setting = street) rather than a plate. A good test of whether the model reads context at all, or only ever the food in the centre of frame.</div>
+        <div class="frame"><img src="assets/atlas8.jpg" alt="Q8 "street food stall" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q8</span> <span class="q">"street food stall"</span> <span class="vtag partial">partial</span> · top 0.13<br /><b>Answer:</b> describes a street-food meal — "a grilled sandwich and corn on the cob." Retrieval did surface a real stall and a street scene, but the answer grounds on the “meal” caption rather than the stall itself, and a bakery case sneaks into the set. Right neighbourhood, imprecise on the noun.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas9.jpg<br />Gradio result strip for Q9</span></div></div>
-        <div class="cap"><span class="qn">Q9</span> <span class="q">"a person dressed as food"</span> · <span class="todo">‹trick shot — who ranks first? · scores›</span> · Does the costume outrank real food of the same shape? Tells me whether food-shape alone is steering the match. Pairs directly with the mis-seeing dossier in §7.</div>
+        <div class="frame"><img src="assets/atlas9.jpg" alt="Q9 "a person dressed as food" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q9</span> <span class="q">"a person dressed as food"</span> <span class="vtag success">success</span> · top 0.11<br /><b>Answer:</b> a young child dressed as a pineapple. The costume ranks first — food-shape plus a person is exactly what the pixel route locks onto. This is the same trick shot Route B misses entirely in §5, and it feeds straight into the dossier.</div>
       </figure></div>
-
       <div class="atlas-card"><figure>
-        <div class="frame"><div class="slot shot"><span>atlas10.jpg<br />Gradio result strip for Q10</span></div></div>
-        <div class="cap"><span class="qn">Q10</span> <span class="q">"not food, just looks like it"</span> · <span class="todo">‹honest low-confidence scatter · scores›</span> · A negation, and abstract — SigLIP has basically no grip on "not." Expect the lowest, flattest scores of any query. That failure is the correct behaviour to report, and the flagship case the dossier picks up below.</div>
+        <div class="frame"><img src="assets/atlas10.jpg" alt="Q10 "not food, just looks like it" — Route A answer" /></div>
+        <div class="cap"><span class="qn">Q10</span> <span class="q">"not food, just looks like it"</span> <span class="vtag failure">failure</span> · top 0.12<br /><b>Answer:</b> "the descriptions do not contain information about anything that isn’t food." The flagship failure. Route A actually retrieved the soap “burgers” and a candle display — real not-food — but the captions had already flattened them into food, so grounded generation can't see the lookalikes it's holding. Pixels found them; the caption route hid them. Straight into the dossier below.</div>
       </figure></div>
 
     </div>
+
+    <p>Read together, the pixel route answers <em>look-and-feel</em> and <em>object-presence</em> questions well — drinks, curry, costume, raw dough — gets vaguer when the query names a fine distinction it can't see (a "stall" versus a street meal; "fried" versus merely "crunchy"), and fails hardest exactly where the caption route has erased the thing being asked about: the not-food lookalikes. That last failure is the bridge into the dossier below.</p>
   </div>
 </section>
 
@@ -467,120 +458,30 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
 
     <p>One more thing the scores show: Route&nbsp;A's cosines sit low (≈&nbsp;0.06–0.16) while Route&nbsp;B's look high (≈&nbsp;0.52–0.68). That gap is a <em>scale</em> artefact, not a quality one — SigLIP's text–image similarities are compressed relative to its text–text similarities, so the raw numbers aren't comparable across routes. It's exactly why any later fusion of the two would need per-query normalisation before the scores mean anything together.</p>
 
-    <div class="fill"><b>▸ TO FILL — upload the five figures.</b> Save each comparison plot into <code>assets/</code> with the filename shown on its card, then swap that card's dashed <code>.slot</code> box for <code>&lt;img src="assets/…"&gt;</code>. Captions and verdicts below are already written from the run.</div>
-
-    <figure class="ab-fig"><div class="frame"><div class="slot"><span>assets/ab_salad.png<br />Route A (top row) vs Route B (bottom)</span></div></div>
+    <figure class="ab-fig"><div class="frame"><img src="assets/ab_salad.png" alt="A vs B — fresh green salad" /></div>
       <figcaption><span class="qn">Q1 "fresh green salad with raw vegetables"</span> · <span class="win">Route A wins</span>, overlap 0/5. A returns actual salads and a raw-vegetable leaf platter; B returns pasta, fried chicken and flatbread — its hubs, not salads.</figcaption></figure>
 
-    <figure class="ab-fig"><div class="frame"><div class="slot"><span>assets/ab_fried.png<br />Route A (top row) vs Route B (bottom)</span></div></div>
+    <figure class="ab-fig"><div class="frame"><img src="assets/ab_fried.png" alt="A vs B — crunchy fried food" /></div>
       <figcaption><span class="qn">Q2 "crunchy fried food"</span> · <span class="win">Route A wins</span>, overlap 1/5. A finds pakora, Korean fried chicken and a fries-and-nuggets plate; B leads with a paratha and dessert plates. The one shared file (<code>IMG-20210912</code>) is the fried-chilli-chicken both agree on.</figcaption></figure>
 
-    <figure class="ab-fig"><div class="frame"><div class="slot"><span>assets/ab_southindian.png<br />Route A (top row) vs Route B (bottom)</span></div></div>
+    <figure class="ab-fig"><div class="frame"><img src="assets/ab_southindian.png" alt="A vs B — South Indian breakfast" /></div>
       <figcaption><span class="qn">Q3 "South Indian breakfast"</span> · <span class="win">Route A wins</span>, overlap 0/5 — <span class="over">prediction overturned</span>. A's top hit is dosa with sambar and chutney (0.16, its highest score anywhere); B returns pani puri, paratha and desserts. Dosa's distinctive form carried the pixels further than I expected.</figcaption></figure>
 
-    <figure class="ab-fig"><div class="frame"><div class="slot"><span>assets/ab_dough.png<br />Route A (top row) vs Route B (bottom)</span></div></div>
+    <figure class="ab-fig"><div class="frame"><img src="assets/ab_dough.png" alt="A vs B — dough or batter" /></div>
       <figcaption><span class="qn">Q4 "dough or batter before cooking"</span> · <span class="win">Route A wins</span>, overlap 1/5 — <span class="over">prediction overturned</span>. A pulls raw dough spirals, batter in a blender and uncooked momos; B returns cooked parathas and dosas. The pale, uncooked look was a stronger cue than the <code>preparation_stage</code> caption field.</figcaption></figure>
 
-    <figure class="ab-fig"><div class="frame"><div class="slot"><span>assets/ab_costume.png<br />Route A (top row) vs Route B (bottom)</span></div></div>
-      <figcaption><span class="qn">Q5 "a person dressed as food"</span> · <span class="win">Route A wins</span>, overlap 0/5. A finds the child in a food costume (top, 0.11) and the person holding bread over their face; B has nothing on-topic — its captions never described these as a costume, so the trick shot is invisible to the caption route. Feeds straight into the dossier in §7.</figcaption></figure>
+    <figure class="ab-fig"><div class="frame"><img src="assets/ab_costume.png" alt="A vs B — a person dressed as food" /></div>
+      <figcaption><span class="qn">Q5 "a person dressed as food"</span> · <span class="win">Route A wins</span>, overlap 0/5. A finds the child in a food costume (top, 0.11) and the person holding bread over their face; B has nothing on-topic — its captions never described these as a costume, so the trick shot is invisible to the caption route. Feeds straight into the dossier in §6.</figcaption></figure>
 
     <h3>The tofu case — where a dumb keyword match saves the day</h3>
     <p>Caption-embedding search flat-out missed a tofu salad: the whole-string vector let "salad" drown out "tofu." So I added a small hybrid — SigLIP similarity weighted by <code>alpha</code>, plus the fraction of my query words that literally show up in the caption — scored across <em>every</em> image, so a plain "tofu" match can haul the photo back into view. It's beyond what Level&nbsp;2 asks for, but I kept it because it shows the exact seam where embeddings fail and a literal word match rescues them.</p>
-    <div class="fill"><b>▸ TO FILL — before / after.</b> Paste the ranked list from <code>caption_search("Salad with grilled tofu")</code> next to <code>hybrid_search(...)</code> so you can watch the right file climb.</div>
-  </div>
-</section>
-
-<!-- RESULTS: THE COMPANION ANSWERING -->
-<section>
-  <div class="wrap">
-    <p class="sec-no">§ 6 · Results — the companion answering <span class="dim">— grounded generation over Route&nbsp;A</span></p>
-    <h2>Actually talking to the archive</h2>
-    <p>The whole loop end to end: a question pulls images through <strong>Route&nbsp;A</strong>, their captions become the only thing the model is allowed to use, and the answer names the photos by filename with the pictures next to it. Ten questions below, each tagged for how well the system actually did — and one thing to notice first: <em>every</em> answer carries a "low-confidence" banner. That's not ten failures. SigLIP's text–image cosines sit structurally low (≈&nbsp;0.09–0.16), so the 0.20 warning threshold — fine for text–text scores — fires on everything. It's the same scale mismatch from §5, showing up in the interface.</p>
-    <div class="ans-legend">
-      <span><span class="vtag success">success</span> answer correct, images relevant</span>
-      <span><span class="vtag partial">partial</span> answer right but retrieval mixed, or slightly off-target</span>
-      <span><span class="vtag failure">failure</span> answer wrong or unhelpful</span>
-    </div>
-    <div class="fill"><b>▸ TO FILL — drop each answer screenshot</b> into <code>assets/</code> with the filename on its card, and swap that card's dashed <code>.slot</code> for <code>&lt;img src="assets/…"&gt;</code>. The answer text, tags and observations are already filled from the runs.</div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"not food, just looks like it" <span class="sc">· top 0.12</span></span><span class="vtag failure">failure</span></div>
-      <div class="body">"I'm sorry, but the descriptions do not contain information about anything that isn't food."</div>
-      <div class="shot"><div class="slot"><span>assets/ans_notfood.png</span></div></div>
-      <div class="obs"><b>The flagship failure.</b> Route&nbsp;A actually retrieved the soap "burgers" and a candle display — genuine not-food. But the captions had already flattened them into food, so grounded generation can't see the lookalikes it's literally holding. Pixels found them; the caption route hid them. This is the §7 dossier gap, live in the chat.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"a person dressed as food" <span class="sc">· top 0.11</span></span><span class="vtag success">success</span></div>
-      <div class="body"><span class="fn">IMG-20230827-WA0001.jpg</span> describes a young child dressed as a pineapple.</div>
-      <div class="shot"><div class="slot"><span>assets/ans_costume.png</span></div></div>
-      <div class="obs"><b>Clean win.</b> Top image is the pineapple costume and the answer names the file. The exact trick shot Route&nbsp;B missed entirely in §5 is answered here because Route&nbsp;A retrieved it.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"a cold drink with ice" <span class="sc">· top 0.14</span></span><span class="vtag success">success</span></div>
-      <div class="body">Cites <span class="fn">VideoCapture_20241002.jpg</span> (iced tea with a straw) and <span class="fn">IMG-20200420-WA0001.jpg</span> (three glasses garnished with lime and mint).</div>
-      <div class="shot"><div class="slot"><span>assets/ans_drink.png</span></div></div>
-      <div class="obs"><b>Glassware handled.</b> All four retrieved are cold drinks; the answer lists two with grounded detail. Transparency and reflective glass, which I'd flagged as a risk, gave the pixel route no trouble.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"a warm orange curry" <span class="sc">· top 0.12</span></span><span class="vtag success">success</span></div>
-      <div class="body">Lists three curries straight from their colour captions — "warm browns and yellows … creamy," "warm reds, browns, greens … creamy," "yellow sauce, chicken pieces … warm yellows and browns."</div>
-      <div class="shot"><div class="slot"><span>assets/ans_curry.png</span></div></div>
-      <div class="obs"><b>Colour held to category.</b> I'd feared this query would drag in "anything orange," but all four are genuine curries. The answer quotes the caption colour phrases directly.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"dessert on a white plate" <span class="sc">· top 0.13</span></span><span class="vtag success">success</span></div>
-      <div class="body"><span class="fn">IMG-20220917-WA0004.jpg</span> features dessert on a plate — a chocolate and cream confection alongside a biscotti-like treat.</div>
-      <div class="shot"><div class="slot"><span>assets/ans_dessert.png</span></div></div>
-      <div class="obs"><b>Compound query, mostly satisfied.</b> Three of four sit on pale plates; the cheesecake on dark slate is the honest edge case where "white plate" slipped.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"dough or batter before cooking" <span class="sc">· top 0.11</span></span><span class="vtag success">success</span></div>
-      <div class="body"><span class="fn">IMG_20210515_202658_273.jpg</span> describes a collection of rolled-out cinnamon rolls, which are dough.</div>
-      <div class="shot"><div class="slot"><span>assets/ans_dough.png</span></div></div>
-      <div class="obs"><b>Prep-stage lands.</b> Every retrieved image is pre-cooking — raw rolls, batter in a blender, prep ingredients, uncooked chunks — and the answer names the raw dough.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"suth indian breakfast" <span class="sc">· top 0.16 · note the typo</span></span><span class="vtag success">success</span></div>
-      <div class="body"><span class="fn">IMG-20210509-WA0002.jpg</span> mentions "Dosa, sambar, and chutney. South Indian."</div>
-      <div class="shot"><div class="slot"><span>assets/ans_southindian.png</span></div></div>
-      <div class="obs"><b>Robust to a misspelling.</b> Even with "suth" typed, the pixel route found dosa-sambar-chutney and the answer nailed it — a typo that a literal caption or keyword match might have stumbled on.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"street food stall" <span class="sc">· top 0.13</span></span><span class="vtag partial">partial</span></div>
-      <div class="body">The description of <span class="fn">20251116_204358.jpg</span> mentions "Two people are enjoying a street food meal consisting of a grilled sandwich and corn on the cob."</div>
-      <div class="shot"><div class="slot"><span>assets/ans_streetfood.png</span></div></div>
-      <div class="obs"><b>Right neighbourhood, imprecise noun.</b> Retrieval did surface a real stall and a street scene, but the answer grounds on the "meal" caption rather than the stall itself, and a bakery case sneaks into the set.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"fresh green salad with raw vegetables" <span class="sc">· top 0.09</span></span><span class="vtag partial">partial</span></div>
-      <div class="body"><span class="fn">IMG_20220731_151603_068.jpg</span> mentions a salad with greens, mushrooms, and croutons.</div>
-      <div class="shot"><div class="slot"><span>assets/ans_salad.png</span></div></div>
-      <div class="obs"><b>Answer right, retrieval half-clean.</b> Top hit is a real salad and the raw-veg leaf platter is spot on, but a stir-fry and a pasta creep into the four returned.</div>
-    </div>
-
-    <div class="ans-card">
-      <div class="head"><span class="qq">"something crunchy and fried" <span class="sc">· top 0.13</span></span><span class="vtag partial">partial</span></div>
-      <div class="body">The image <span class="fn">IMG_20200625-WA0001.jpg</span> describes "puffed rice and vegetable mixture … golden-brown and crunchy."</div>
-      <div class="shot"><div class="slot"><span>assets/ans_fried.png</span></div></div>
-      <div class="obs"><b>Crunchy won over fried.</b> The answer picks bhel — crunchy but not fried — over the genuinely fried cutlet and pakora also retrieved. The model latched onto one adjective and let the other slide.</div>
-    </div>
-
-    <p>Read together: the pixel route answers <em>look-and-feel</em> and <em>object-presence</em> questions well (drinks, curry, costume, dough), gets vaguer when the query names a fine distinction it can't see (a "stall" vs a street meal; "fried" vs merely "crunchy"), and fails hardest exactly where the caption route has erased the thing being asked about — the not-food lookalikes. That last one is the bridge into the dossier below.</p>
   </div>
 </section>
 
 <!-- RESULTS: MIS-SEEING DOSSIER -->
 <section>
   <div class="wrap">
-    <p class="sec-no">§ 7 · Results — mis-seeing dossier</p>
+    <p class="sec-no">§ 6 · Results — mis-seeing dossier</p>
     <h2>Three tripwires, and what they actually caught</h2>
     <p>The <code>depicts_real_food</code> field gets checked automatically against my own notes on which shots are fakes; any disagreement lands in the dossier. Here's the twist: only one of these three is really the model failing to <em>see</em>. The other two caught something I didn't expect — that <strong>my own schema wasn't fully decided</strong>. That's a design finding, not a model bug.</p>
     <div class="dossier">
@@ -625,7 +526,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
 <!-- REFLECTION -->
 <section>
   <div class="wrap">
-    <p class="sec-no">§ 8 · Project reflection</p>
+    <p class="sec-no">§ 7 · Project reflection</p>
     <h2>What I actually took away from this</h2>
     <p>The best surprise was that the schema turned into a mirror. I set out to design fields so the model could describe my food — and ended up finding the places where <em>my own</em> definitions didn't have an answer. The <code>food_lookalike</code> boundary is the clearest one: what looked like the machine's mistake was really a question I'd never sat down and decided.</p>
     <p>The route comparison humbled me. I'd designed the five queries expecting a clean split — pixels win the look-and-feel ones, captions win the named ones — and instead Route&nbsp;A swept all five. The lesson wasn't "pixels are better." It was that a route can fail for a reason that has nothing to do with the axis you set out to test: Route&nbsp;B lost because a handful of hub captions dominate its embedding space, so it kept handing back the same paratha and dessert plates no matter what I asked. I would never have seen that from the schema or the captions in isolation; it only showed up when I lined the two routes' results side by side and noticed the repeats. That both routes sit on a SigLIP backbone and still diverge this hard is the part I keep coming back to — describing an image and then embedding the words is a genuinely different move from embedding the image, and here it introduced a failure the pixels simply don't have.</p>
@@ -635,7 +536,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
 <!-- LIMITATIONS -->
 <section>
   <div class="wrap">
-    <p class="sec-no">§ 9 · Limitations</p>
+    <p class="sec-no">§ 8 · Limitations</p>
     <h2>What this can't do (yet)</h2>
     <p>The captions are only ever one greedy pass of a 4-bit 4B model. It still invents ingredients it's inferred from a dish name even after I've told it not to, and it states cuisine guesses with a confidence they haven't earned. Searching over a single vector per caption is coarse; the keyword boost patches it but bluntly — literal word overlap, no synonyms. Answers come from captions, so any mistake upstream slides silently into the reply. And the dossier is small on purpose: three chosen tripwires, not a survey. It shows <em>kinds</em> of mis-seeing, not how often they happen.</p>
     <p>This is a Level&nbsp;2 system, and it stops where Level&nbsp;2 stops. It doesn't fuse the two routes into one scored number, doesn't pass images back into the model at answer time, and doesn't measure precision@k across routes. Those are the Level&nbsp;3 questions — and honestly, they're where I'd go next.</p>
@@ -645,7 +546,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
 <!-- SOURCES & REFERENCES -->
 <section style="border-bottom:none;">
   <div class="wrap">
-    <p class="sec-no">§ 10 · Sources &amp; references</p>
+    <p class="sec-no">§ 9 · Sources &amp; references</p>
     <h2>References</h2>
     <ol class="refs">
       <li>Zhai, X., Mustafa, B., Kolesnikov, A., &amp; Beyer, L. (2023). <em>Sigmoid Loss for Language Image Pre-Training (SigLIP)</em>. <span class="mono">google/siglip-so400m-patch14-384</span>.</li>
@@ -655,7 +556,6 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
       <li>Course materials, CompSci for Designers 2, TH Nürnberg — the Level&nbsp;1 starter notebook (SigLIP embedding loop, reused unchanged).</li>
       <li>Page-format references: <span class="mono">dreambooth.github.io</span> and <span class="mono">ricardomehl.github.io/publication/LatentWorld_Documentation</span>.</li>
     </ol>
-    <div class="fill" style="margin-top:26px;"><b>▸ Before I publish:</b> double-check every image on this page is one I'm allowed to share publicly — GitHub Pages on a free account needs a <b>public</b> repo. Swap any private shot for one from the shareable set, and keep the full 254 images (or a ≥20-image sample + a description of the rest) in the submission bundle instead of the repo if needed.</div>
   </div>
 </section>
 
