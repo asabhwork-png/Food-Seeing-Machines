@@ -1,3 +1,141 @@
+
+/
+Claude finished the response
+Screenshot 2026-07-09 at 8.02.30 PM.png
+where is the drop zone?
+
+Stop here — this screen is the wrong tool. You're in the Create new file text editor, which only makes empty text files. A .jpg created this way would be a broken 0-byte file, not your photo. There's no drop zone on this screen.
+
+Click Cancel changes (top right) to leave this editor.
+
+Then do this instead:
+
+Back on the repo Code tab, click the + button (top, next to "Go to file") → choose Upload files (not "Create new file").
+That screen has the drop zone — a large dashed box saying "Drag files here to add them to your repository."
+On your computer, make a folder named assets and put teaser.jpg (and any other images) inside it. Drag the whole assets folder into the drop zone. GitHub keeps the folder structure, so your files land at assets/teaser.jpg.
+Scroll down, commit message Add corpus images, click Commit changes.
+The difference: Create new file = type text into an empty file. Upload files = drag real files (including images) from your computer. You want Upload files.
+
+One note — I see the repo is now named Food-Seeing-Machines, so your live URL and image paths update accordingly. The src="assets/teaser.jpg" references in your HTML stay the same since they're relative, so no change needed there.
+
+what are the images i need to add?
+
+
+Inventoried image placeholders and catalogued required files
+Inventoried image placeholders and catalogued required files
+Let me pull the exact image slots from your index.html so this maps one-to-one.
+
+
+List all image placeholder slots and their labels
+List all image placeholder slots and their labels
+Here's every image slot in the page, in order, with the filename to give each so they match the HTML:
+
+1. Teaser (top of page) — 1 image, required
+The hero. A contact sheet: a grid of ~15–20 corpus thumbnails collaged into one image. Name it teaser.jpg.
+
+2. Retrieval atlas (§4) — 4 images
+The top-4 results for one telling query. Best choice is a query that shows a miss (e.g. "a warm orange curry" pulling in anything orange), since failures score highest in this course. Name them atlas1.jpg, atlas2.jpg, atlas3.jpg, atlas4.jpg.
+
+3. The Companion answering (§6) — 3 images
+The images the model cited in its grounded answer to "Which photos show street food, and from where?" — i.e. the actual retrieved photos shown alongside the answer text. Name them answer1.jpg, answer2.jpg, answer3.jpg.
+
+So 8 images total, though only the teaser is strictly load-bearing. If you're short on time tonight, this is the priority order:
+
+teaser.jpg — do this one for sure.
+The 4 atlas images — pick a query that fails, it's your strongest documentation.
+The 3 answer images.
+Not images, but worth knowing: the four red ▸ TO FILL text blocks (atlas verdicts, the route-comparison Observed column, the tofu before/after, and the §6 answer text) are copy-pasted text from your notebook runs, not photos — you'll fill those by editing index.html, not by uploading.
+
+Two practical notes: put all eight in the assets folder before dragging it in, and only include photos you're okay showing publicly since the repo is public. If any trick-shot or answer image is private, leave that slot as-is and swap in a shareable one.
+
+Want me to add a couple more slots — like the three dossier trick-shot images (chili tattoo, candles, ceramic keychain)? Those would strengthen §7 a lot, but I left them as text-only since those specific shots may be the ones you can't share publicly.
+
+Screenshot 2026-07-09 at 8.08.26 PM.png
+the retrieval atlas needs to look like this
+
+
+Architected card-grid layout and designed test queries for retrieval atlas
+Architected card-grid layout and designed test queries for retrieval atlas
+That reference makes the format clear: each query is a card — a screenshot of the Gradio result strip on top, and a monospace caption underneath with Q# "query" · verdict (score range) · embedding-space reasoning. Your current §4 is a table; let me rebuild it into that card grid, keeping your ten food queries and pre-writing the reasoning so you only paste screenshots and drop in your real verdict/scores.
+
+
+Restructured section with responsive card-grid layout and styling
+Restructured section with responsive card-grid layout and styling
+First the card CSS, then I'll swap the section.
+
+
+Edited 2 files, ran a command
+Edited 2 files, ran a command
+Balanced — 10 atlas cards, all slots and tokens in place.
+
+
+Presented file
+Presented file
+§4 now matches that reference layout: a 3-across card grid, each card a landscape screenshot slot with a monospace caption reading Q# "query" · verdict (scores) · reasoning. The hit/miss reasoning is written for all ten queries; you just supply the pictures and numbers.
+
+What each card needs from you:
+
+Screenshots — one Gradio result-strip capture per query, into assets/atlas1.jpg through atlas10.jpg. In the HTML, replace each dashed <div class="slot shot">…</div> with <img src="assets/atlas1.jpg" alt="Q1 results" /> (matching card number to file number).
+Verdict + scores — each card has one red ‹…› token (e.g. ‹likely colour-over-meaning miss · scores›). Replace it with the real verdict word and score range from that run, exactly like the reference's hit (13.4–9.2) or honest low-confidence scatter (2.37–1.18).
+So per card it's: drop the screenshot, swap the one red token. Ten cards.
+
+Two notes so it renders like the reference:
+
+Your Gradio is on a dark theme, so the screenshots will read as dark strips against the warm page — same contrast as the example you showed. The slot is set to a 16:10 landscape ratio to fit those strips.
+The image src paths are relative, so they work regardless of the repo name change to Food-Seeing-Machines.
+This atlas maps cleanly onto the rest of the page too: Q2 ("South Indian breakfast") sets up where Route B wins in §5, and Q9/Q10 (the trick shots) hand off to the mis-seeing dossier in §7 — worth mentioning in your demo as the through-line.
+
+If you want, I can convert §5 (two-routes comparison) and §6 (the answering card) into this same card style so the whole results section looks consistent — say the word.
+
+
+Index
+Code · HTML 
+do i need to keep creating new repositories each time html changes are there?
+
+No. One repository, forever. You edit the same index.html in place and commit — GitHub keeps the history and Pages redeploys the same URL automatically. New repo each time would be wrong (and would keep changing your live URL).
+
+The loop for every future change is just:
+
+In your repo, click index.html → the pencil (Edit) icon.
+Make your edits (paste run outputs, swap in <img> tags, etc.).
+Scroll down → Commit changes with a short message like Fill atlas scores.
+Wait ~1 minute, refresh your live Pages URL — the change is there.
+For images it's the same idea: + → Upload files, drop them into assets/, commit. No new repo.
+
+One caveat about all the manual re-uploading: since I'm regenerating the whole index.html on my side each time you ask for a change, the cleanest way to get my latest version onto GitHub is to replace the file's entire contents rather than hand-merge. To do that: open index.html in the GitHub editor, select all (Cmd/Ctrl+A), delete, paste the full new file I give you, commit. That overwrites cleanly in the one repo.
+
+The tradeoff to watch: if you've already pasted your real screenshots and scores into the GitHub copy, and then you overwrite it with a fresh file from me, you'll wipe those edits. So once you start filling in real results, either do your editing only in the GitHub copy, or tell me your changes and I'll fold them into the master file here so there's a single source of truth. Which would you prefer?
+
+Screenshot 2026-07-09 at 8.21.12 PM.png
+where?
+
+
+Pinpointed file location within existing repository structure
+Pinpointed file location within existing repository structure
+To replace index.html with my latest version (the rebuilt atlas), do this right here:
+
+Click index.html in the file list.
+On the next screen, click the pencil icon (top right of the file, "Edit this file").
+Click anywhere in the code, select all: Cmd+A, then Delete.
+Open the new index.html I gave you (the presented file), select all, copy, and paste into the empty editor.
+Scroll down, commit message Update atlas layout, click Commit changes.
+Wait ~1 minute, refresh your live Pages URL, done.
+
+That's the answer to your earlier question too — same repo, same file, just edited in place.
+
+One thing I notice in this screenshot: there's no assets/ folder yet, so your teaser.jpg upload from earlier didn't land. When you're ready for images, use + → Upload files and drag an assets folder (with the images inside) into the drop zone — that's a separate step from editing the HTML.
+
+
+
+
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+
+
+Index · HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +171,7 @@
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
   a{color:var(--indigo);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;}
   a:hover{color:var(--miss);}
-
+ 
   /* ---------- masthead ---------- */
   header.masthead{padding:88px 0 56px;border-bottom:1px solid var(--rule);position:relative;}
   .eyebrow{
@@ -49,7 +187,7 @@
   .byline{font-family:"IBM Plex Mono",monospace;font-size:13.5px;color:var(--faint);margin-top:26px;line-height:1.9;}
   .byline b{color:var(--ink);font-weight:600;}
   .byline .lvl{color:var(--indigo);font-weight:600;}
-
+ 
   /* ---------- teaser ---------- */
   .teaser{margin:40px 0 0;}
   .tagline{
@@ -66,7 +204,7 @@
   }
   .slot b{color:var(--miss);font-weight:600;}
   figcaption{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--faint);margin-top:10px;line-height:1.6;}
-
+ 
   /* ---------- sections ---------- */
   section{padding:52px 0;border-bottom:1px solid var(--rule);}
   .sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--marigold);letter-spacing:.12em;margin:0 0 10px;font-weight:500;}
@@ -78,7 +216,7 @@
   strong{font-weight:500;color:var(--ink);}
   em{font-style:italic;}
   code,.mono{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:#F3E9D4;padding:1px 6px;border-radius:3px;color:#5c4a2e;}
-
+ 
   /* ---------- legend ---------- */
   .legend{display:flex;gap:22px;flex-wrap:wrap;margin:6px 0 4px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--faint);}
   .legend span{display:inline-flex;align-items:center;gap:8px;}
@@ -86,11 +224,11 @@
   .dot.hit{background:var(--hit);}
   .dot.miss{background:var(--miss);}
   .dot.marigold{background:var(--marigold);}
-
+ 
   /* ---------- pipeline ---------- */
   .pipe{margin:26px 0 8px;background:#fff;border:1px solid var(--rule);border-radius:4px;padding:22px 18px;}
   .pipe svg{width:100%;height:auto;display:block;}
-
+ 
   /* ---------- tables ---------- */
   .tbl{width:100%;border-collapse:collapse;margin:20px 0 6px;font-size:16px;}
   .tbl th,.tbl td{border:1px solid var(--rule);padding:11px 13px;text-align:left;vertical-align:top;line-height:1.5;}
@@ -103,13 +241,13 @@
   .chip.tbd{background:#EEE7D6;color:var(--faint);}
   .chip.a{background:#E9F0DF;color:var(--hit);}
   .chip.b{background:#E2E5F1;color:var(--indigo);}
-
+ 
   /* ---------- code block ---------- */
   pre{background:#241C13;color:#F1E7D3;border-radius:5px;padding:18px 20px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.65;margin:20px 0;}
   pre .c{color:#9d8f74;}
   pre .k{color:#E0A94A;}
   pre .s{color:#A9C48C;}
-
+ 
   /* ---------- answer card (chat prototype) ---------- */
   .answer{border:1px solid var(--rule);border-radius:6px;background:#fff;overflow:hidden;margin:22px 0;}
   .answer .q{background:#F5ECD8;padding:14px 20px;font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--indigo);border-bottom:1px solid var(--rule);}
@@ -118,7 +256,7 @@
   .answer .a .fn{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:#E9F0DF;color:var(--hit);padding:1px 6px;border-radius:3px;}
   .answer .imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;padding:0 20px 20px;}
   .answer .imgs .slot{min-height:110px;font-size:11px;padding:12px;}
-
+ 
   /* ---------- dossier ---------- */
   .dossier{display:grid;gap:22px;margin-top:26px;}
   .case{border:1px solid var(--rule);border-left:4px solid var(--miss);border-radius:4px;background:#fff;padding:22px 24px;}
@@ -134,26 +272,37 @@
   .verdict .truth .lbl{color:var(--hit);}
   .case .why{font-size:16.5px;margin:0;}
   .case .why b{font-weight:600;color:var(--indigo);}
-
+ 
   /* ---------- callout ---------- */
   .note{border-left:3px solid var(--marigold);background:#FaF2DE;padding:16px 20px;margin:24px 0;border-radius:0 4px 4px 0;font-size:17px;}
   .note .hd{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--marigold);margin-bottom:6px;font-weight:600;}
-
+ 
   /* ---------- fill markers ---------- */
   .fill{border:1.5px dashed var(--miss);border-radius:4px;background:#FBEDE7;padding:16px 20px;margin:22px 0;font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.75;color:#7a3320;}
   .fill b{color:var(--miss);}
-
+ 
   /* ---------- gallery ---------- */
   .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:16px 0;}
   .gallery .slot{min-height:130px;font-size:11px;padding:14px;}
-
+ 
+  /* ---------- retrieval atlas cards ---------- */
+  .atlas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:34px 26px;margin:24px 0 6px;}
+  .atlas-card .shot{min-height:0;aspect-ratio:16/10;font-size:11px;padding:16px;}
+  .atlas-card figure{margin:0;}
+  .atlas-card .cap{font-family:"IBM Plex Mono",monospace;font-size:13.5px;line-height:1.62;margin-top:13px;color:#4c4030;}
+  .atlas-card .cap .qn{color:var(--marigold);font-weight:600;}
+  .atlas-card .cap .q{color:var(--ink);}
+  .atlas-card .cap .v-hit{color:var(--hit);font-weight:600;}
+  .atlas-card .cap .v-miss{color:var(--miss);font-weight:600;}
+  .atlas-card .cap .todo{color:#7a3320;background:#FBEDE7;border:1px dashed var(--miss);padding:0 5px;border-radius:3px;white-space:nowrap;}
+ 
   /* ---------- references ---------- */
   ol.refs{font-family:"Newsreader",serif;font-size:16px;line-height:1.7;padding-left:22px;}
   ol.refs li{margin-bottom:12px;}
   .refs .mono{background:none;padding:0;color:var(--faint);}
-
+ 
   footer{padding:44px 0 70px;color:var(--faint);font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.8;}
-
+ 
   @media (max-width:560px){
     body{font-size:18px;}
     .verdict{grid-template-columns:1fr;}
@@ -163,7 +312,7 @@
 </style>
 </head>
 <body>
-
+ 
 <header class="masthead">
   <div class="wrap">
     <p class="eyebrow">Seeing Machines · Semester final · CompSci for Designers 2</p>
@@ -177,7 +326,7 @@
       TH Nürnberg, Fakultät Design &nbsp;·&nbsp; Summer 2026<br />
       Instructors: Moritz Schwind, Christopher Kopic
     </div>
-
+ 
     <!-- TEASER + ONE-LINE TAGLINE -->
     <div class="teaser">
       <p class="tagline">I know this archive by heart — which is exactly why I notice the moment the machine sees a chili that's really just a tattoo.</p>
@@ -190,9 +339,9 @@
     </div>
   </div>
 </header>
-
+ 
 <main>
-
+ 
 <!-- ABSTRACT -->
 <section>
   <div class="wrap">
@@ -207,27 +356,27 @@
     </div>
   </div>
 </section>
-
+ 
 <!-- MOTIVATION & CORPUS STATEMENT -->
 <section>
   <div class="wrap">
     <p class="sec-no">§ 1 · Motivation &amp; corpus statement</p>
     <h2>An archive I can fact-check from memory</h2>
     <p>Most people who test a retrieval system don't know the data going in, so they can't tell a good answer from a confident wrong one. I wanted the opposite. I picked a set of images I know so well that a hallucination jumps out at me instantly. Food photos are perfect for it — they're crammed with detail (ingredients, textures, plating), they carry cultural specificity that models love to guess at, and they let me set traps.</p>
-
+ 
     <h3>What's in the collection</h3>
     <p>254 photos I shot across two countries: home-cooked meals, restaurant food, drinks, desserts, and plenty of raw or half-made food. The India/Germany split isn't incidental — it's where the model's habit of guessing a cuisine becomes something I can actually catch and write down.</p>
-
+ 
     <h3>Why there are fakes in here</h3>
     <p>Mixed in with the real meals are <strong>food lookalikes and food costumes</strong> — things that look like food but aren't: a taco costume, candles moulded as macarons, a little ceramic keychain shaped like a snack. I didn't include these by accident. They're the tripwires. They're the exact spot where reading the pixels and reading the photo <em>have</em> to come apart, because the difference between "food" and "a picture that refers to food" lives in what you know, not in the frame. Both the caption format (§3) and the dossier (§8) are built around them.</p>
-
+ 
     <div class="note">
       <div class="hd">The premise, in one line</div>
       Everything I know about a photo's origin and intent — that a shape is a tattoo, that a macaron is a candle — isn't recoverable from the pixels. So the whole project is really about giving the machine somewhere to write down what it <em>can</em> see, which leaves the part only I know standing out in relief.
     </div>
   </div>
 </section>
-
+ 
 <!-- APPROACH + PIPELINE DIAGRAM -->
 <section>
   <div class="wrap">
@@ -282,7 +431,7 @@
     <p>When it answers, the model is told to use only the descriptions it's handed, to name images by filename, and to just say so when the descriptions don't cover the question. Captioning runs greedily so it's repeatable, and every batch gets written to Drive — captioning all 254 images is a one-time 20–45&nbsp;minute GPU job, and a dropped session shouldn't cost me a thing.</p>
   </div>
 </section>
-
+ 
 <!-- DESIGN DECISION: SCHEMA + PROMPT -->
 <section>
   <div class="wrap">
@@ -300,7 +449,7 @@ setting                  <span class="c"># home | restaurant | street | studio_o
 key_ingredients_visible  <span class="c"># a list — only what you can SEE, not what you assume</span>
 colors_and_textures      <span class="c"># adjectives, because they're good to search on</span>
 confidence_notes         <span class="c"># what it's unsure about — my audit trail</span></pre>
-
+ 
     <h3>Three choices I'll stand behind</h3>
     <table class="tbl">
       <thead><tr><th>Field</th><th>What I chose</th><th>Why, and not the obvious thing</th></tr></thead>
@@ -310,7 +459,7 @@ confidence_notes         <span class="c"># what it's unsure about — my audit t
         <tr><td>preparation_stage</td><td class="choice">kept it,<br />four values</td><td>I deliberately shot raw and half-made food. Dropping this field would throw away a part of the archive I curated on purpose — and a cheap thing to search on ("dough before baking").</td></tr>
       </tbody>
     </table>
-
+ 
     <h3>The prompt — and why it's worded the way it is</h3>
     <p>The format only holds if the prompt makes it hold. I ask Gemma for JSON and nothing else, with exactly these fields. Four of the rules are doing the real work:</p>
     <pre>You are describing one photograph from a personal food-photography archive.
@@ -318,7 +467,7 @@ Return ONLY a JSON object — no markdown fences, no commentary — with exactly
 these fields: { one_sentence_summary, dish_or_subject, dish_category,
 depicts_real_food, cuisine_or_origin, preparation_stage, setting,
 key_ingredients_visible, colors_and_textures, confidence_notes }
-
+ 
 <span class="k">Rules:</span>
 <span class="s">- "food_lookalike" means something that resembles food but isn't edible:</span>
 <span class="s">  a costume, a toy, a food-shaped object.</span>
@@ -335,41 +484,76 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
         <tr><td class="choice">"unknown" beats<br />a guess</td><td>This turns the model's confidence into a choice I can read. A guess written as fact is invisible; a guess written where "unknown" was on offer is a behaviour I can point at and analyse.</td></tr>
       </tbody>
     </table>
-
+ 
     <h3>One small change that fixed retrieval</h3>
     <p>When I flatten a caption into a string to search over, I put the <strong>discriminating words first</strong> — category, dish name, visible ingredients, textures — and shove the prose to the end. SigLIP squashes the whole string into one vector, and the front words pull hardest. I leave <code>confidence_notes</code> out of the search string entirely; it's hedging for my audit trail, not a signal. Reordering this alone cleared up a drift where wordy captions kept dragging in the wrong photos.</p>
   </div>
 </section>
-
+ 
 <!-- RESULTS: RETRIEVAL ATLAS -->
 <section>
   <div class="wrap">
     <p class="sec-no">§ 4 · Results — retrieval atlas <span class="dim">— ten queries, wins and misses</span></p>
     <h2>Reading the embedding space out loud</h2>
-    <p>Ten queries against the archive, each one read back in embedding terms: <em>why</em> did these particular photos come up? The failures are the good bit — they're where similarity grabbed a colour or a shape instead of the meaning I actually asked for.</p>
-    <div class="fill"><b>▸ TO FILL — from my search() runs.</b> Set the <span style="color:var(--hit)">hit</span>/<span style="color:var(--miss)">miss</span> chip per query and write the one-line reason from what really came back. The guess in the last column is a starting point — I'll correct it against the results, and drop a thumbnail strip under the 2–3 most telling rows.</div>
-    <table class="tbl">
-      <thead><tr><th style="width:34%">Query</th><th style="width:10%">Verdict</th><th>Why these came up (in embedding terms)</th></tr></thead>
-      <tbody>
-        <tr><td class="choice">fresh green salad with raw vegetables</td><td><span class="chip tbd">TBD</span></td><td>Heavy on colour and texture — SigLIP should cluster tight on green and leafy. I expect a clean hit here.</td></tr>
-        <tr><td class="choice">South Indian breakfast</td><td><span class="chip tbd">TBD</span></td><td>A cuisine name with almost no consistent look (idli, dosa, upma all differ). Tests whether pixels alone carry <em>cuisine</em> — probably where Route B pulls ahead.</td></tr>
-        <tr><td class="choice">dough or batter before cooking</td><td><span class="chip tbd">TBD</span></td><td>Prep-stage query. Pale, smooth surfaces — easy to confuse with yoghurt or cream, so watch for that.</td></tr>
-        <tr><td class="choice">something crunchy and fried</td><td><span class="chip tbd">TBD</span></td><td>Texture-led, golden and high-contrast. Should hit — but I bet roasted (not fried) things sneak in on colour alone.</td></tr>
-        <tr><td class="choice">a warm orange curry</td><td><span class="chip tbd">TBD</span></td><td>Colour dominates. This probably drags in anything orange — soup, dal, maybe a mango drink. A textbook colour-over-meaning miss to document.</td></tr>
-        <tr><td class="choice">dessert on a white plate</td><td><span class="chip tbd">TBD</span></td><td>Two things at once (category + setting). Does the white plate distract from the dessert?</td></tr>
-        <tr><td class="choice">a cold drink with ice</td><td><span class="chip tbd">TBD</span></td><td>Glass and transparency — reflective, see-through regions. Curious whether SigLIP handles glassware or just latches onto the background.</td></tr>
-        <tr><td class="choice">street food stall</td><td><span class="chip tbd">TBD</span></td><td>A scene, not a dish. Rides on background cues (setting=street) — a good check of whether it reads context or only the plate.</td></tr>
-        <tr><td class="choice">a person dressed as food</td><td><span class="chip tbd">TBD</span></td><td>A trick shot. Does the costume outrank real food? Tells me whether food-shape alone is steering the match.</td></tr>
-        <tr><td class="choice">not food, just looks like it</td><td><span class="chip tbd">TBD</span></td><td>A negation, and abstract — SigLIP has basically no grip on "not." I expect this to fail, and that failure is an honest limit worth showing.</td></tr>
-      </tbody>
-    </table>
-    <div class="gallery">
-      <div class="slot">[ telling row ]<br />top-1</div><div class="slot">top-2</div><div class="slot">top-3</div><div class="slot">top-4</div>
+    <p>Ten queries run against the Level&nbsp;1 SigLIP baseline, chosen to probe colour, texture, cuisine, preparation stage, composition, and the trick shots separately. Scores are SigLIP's logit-scaled similarity; the failures are the good bit — they're where similarity grabbed a colour or a shape instead of the meaning I actually asked for.</p>
+    <div class="fill"><b>▸ TO FILL — one screenshot per card.</b> For each query, screenshot the Gradio result strip and drop it into <code>assets/atlas1.jpg … atlas10.jpg</code> (replace the dashed <code>.shot</code> box with <code>&lt;img src="assets/atlasN.jpg"&gt;</code>). Then replace each red <span class="todo">‹verdict + score range›</span> token with the real verdict and numbers from that run. The reasoning under each is already written — adjust it if the run surprises me.</div>
+ 
+    <div class="atlas-grid">
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas1.jpg<br />Gradio result strip for Q1</span></div></div>
+        <div class="cap"><span class="qn">Q1</span> <span class="q">"fresh green salad with raw vegetables"</span> · <span class="todo">‹likely hit · scores›</span> · Heavy on colour and texture — SigLIP should cluster tight on green and leafy. If the top results are all salads, it's matching the whole scene's colour signature, which this query hands it cleanly.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas2.jpg<br />Gradio result strip for Q2</span></div></div>
+        <div class="cap"><span class="qn">Q2</span> <span class="q">"South Indian breakfast"</span> · <span class="todo">‹likely low-confidence miss · scores›</span> · A cuisine name with almost no consistent look — idli, dosa and upma share nothing visually. Tests whether pixels alone carry <em>cuisine</em>; if scores sit low, that's the gap Route B fills later.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas3.jpg<br />Gradio result strip for Q3</span></div></div>
+        <div class="cap"><span class="qn">Q3</span> <span class="q">"dough or batter before cooking"</span> · <span class="todo">‹verdict · scores›</span> · A prep-stage query over pale, smooth, low-texture surfaces — easy to confuse with yoghurt or cream. Watch whether the misses are all the same "pale blob" shape, which would say SigLIP is reading texture, not stage.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas4.jpg<br />Gradio result strip for Q4</span></div></div>
+        <div class="cap"><span class="qn">Q4</span> <span class="q">"something crunchy and fried"</span> · <span class="todo">‹likely hit · scores›</span> · Texture-led — golden, high-contrast crust. Should hit, but roasted (not fried) items likely sneak in on the same colour, which is the useful part: it shows the model reads <em>appearance</em> of fried, not the cooking method.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas5.jpg<br />Gradio result strip for Q5</span></div></div>
+        <div class="cap"><span class="qn">Q5</span> <span class="q">"a warm orange curry"</span> · <span class="todo">‹likely colour-over-meaning miss · scores›</span> · Colour dominates the whole-image embedding, so this probably drags in anything orange — soup, dal, maybe a mango drink. A textbook case of colour outvoting category; a clean one to document as a miss.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas6.jpg<br />Gradio result strip for Q6</span></div></div>
+        <div class="cap"><span class="qn">Q6</span> <span class="q">"dessert on a white plate"</span> · <span class="todo">‹verdict · scores›</span> · Two constraints at once — category plus setting. If white-plate savoury dishes rank above desserts on darker plates, the plate is steering the match more than the food, which the compound query is designed to expose.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas7.jpg<br />Gradio result strip for Q7</span></div></div>
+        <div class="cap"><span class="qn">Q7</span> <span class="q">"a cold drink with ice"</span> · <span class="todo">‹verdict · scores›</span> · Glass and transparency — reflective, see-through regions SigLIP handles unevenly. Worth checking whether it finds the drink or just locks onto the table and background behind the glass.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas8.jpg<br />Gradio result strip for Q8</span></div></div>
+        <div class="cap"><span class="qn">Q8</span> <span class="q">"street food stall"</span> · <span class="todo">‹verdict · scores›</span> · A scene, not a dish — this rides on background cues (setting = street) rather than a plate. A good test of whether the model reads context at all, or only ever the food in the centre of frame.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas9.jpg<br />Gradio result strip for Q9</span></div></div>
+        <div class="cap"><span class="qn">Q9</span> <span class="q">"a person dressed as food"</span> · <span class="todo">‹trick shot — who ranks first? · scores›</span> · Does the costume outrank real food of the same shape? Tells me whether food-shape alone is steering the match. Pairs directly with the mis-seeing dossier in §7.</div>
+      </figure></div>
+ 
+      <div class="atlas-card"><figure>
+        <div class="frame"><div class="slot shot"><span>atlas10.jpg<br />Gradio result strip for Q10</span></div></div>
+        <div class="cap"><span class="qn">Q10</span> <span class="q">"not food, just looks like it"</span> · <span class="todo">‹honest low-confidence scatter · scores›</span> · A negation, and abstract — SigLIP has basically no grip on "not." Expect the lowest, flattest scores of any query. That failure is the correct behaviour to report, and the flagship case the dossier picks up below.</div>
+      </figure></div>
+ 
     </div>
-    <figcaption>Swap in thumbnails for 2–3 rows above — ideally one clean hit next to one colour-over-meaning miss.</figcaption>
   </div>
 </section>
-
+ 
 <!-- RESULTS: TWO ROUTES -->
 <section>
   <div class="wrap">
@@ -392,7 +576,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
     <div class="fill"><b>▸ TO FILL — before / after.</b> Paste the ranked list from <code>caption_search("Salad with grilled tofu")</code> next to <code>hybrid_search(...)</code> so you can watch the right file climb.</div>
   </div>
 </section>
-
+ 
 <!-- RESULTS: THE COMPANION ANSWERING -->
 <section>
   <div class="wrap">
@@ -411,7 +595,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
     <p>I'll add a second card for a question where retrieval comes up short — the model politely refusing to go past its context is honestly stronger proof that grounding works than any clean success.</p>
   </div>
 </section>
-
+ 
 <!-- RESULTS: MIS-SEEING DOSSIER -->
 <section>
   <div class="wrap">
@@ -456,7 +640,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
     </div>
   </div>
 </section>
-
+ 
 <!-- REFLECTION -->
 <section>
   <div class="wrap">
@@ -466,7 +650,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
     <p>The route comparison changed how I think about the two paths too. They're not really rivals — they fail in <em>opposite</em> directions. Route&nbsp;A keeps hold of texture and colour that no caption fully captures; Route&nbsp;B keeps names and origins that no single pixel carries. And the fact that both sit on a SigLIP backbone and still disagree is the part I keep coming back to: describing an image and then embedding the words is a genuinely different move from embedding the image. It runs the picture through language, and language keeps some things and quietly drops others.</p>
   </div>
 </section>
-
+ 
 <!-- LIMITATIONS -->
 <section>
   <div class="wrap">
@@ -476,7 +660,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
     <p>This is a Level&nbsp;2 system, and it stops where Level&nbsp;2 stops. It doesn't fuse the two routes into one scored number, doesn't pass images back into the model at answer time, and doesn't measure precision@k across routes. Those are the Level&nbsp;3 questions — and honestly, they're where I'd go next.</p>
   </div>
 </section>
-
+ 
 <!-- SOURCES & REFERENCES -->
 <section style="border-bottom:none;">
   <div class="wrap">
@@ -493,9 +677,9 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
     <div class="fill" style="margin-top:26px;"><b>▸ Before I publish:</b> double-check every image on this page is one I'm allowed to share publicly — GitHub Pages on a free account needs a <b>public</b> repo. Swap any private shot for one from the shareable set, and keep the full 254 images (or a ≥20-image sample + a description of the rest) in the submission bundle instead of the repo if needed.</div>
   </div>
 </section>
-
+ 
 </main>
-
+ 
 <footer>
   <div class="wrap">
     Who's Eating? · Level 2 — The Companion · Aditi<br />
@@ -503,6 +687,7 @@ key_ingredients_visible, colors_and_textures, confidence_notes }
     Built with SigLIP + Gemma 3 4B · Written in the spirit of: a failure you can see clearly beats a success you can't.
   </div>
 </footer>
-
+ 
 </body>
 </html>
+ 
