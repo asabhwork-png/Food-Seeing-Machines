@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seeing Machines — L2: The Companion · Aditi</title>
+<meta name="description" content="A multimodal archive companion built over a personal food-photography corpus. MA Design for Digital Futures, TH Nürnberg." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FCF6EA;      /* turmeric-tinted ivory */
+    --ink:#241C13;        /* roasted-spice near-black */
+    --indigo:#34407A;     /* natural-indigo dye — structure, links */
+    --marigold:#C97E16;   /* marigold/saffron — labels, signature accent */
+    --miss:#BE3A1E;       /* chili red — a mis-seeing */
+    --hit:#4B6B2E;        /* curry-leaf green — a hit */
+    --rule:#ECE1CC;       /* warm sand hairline */
+    --faint:#8B7A61;      /* dusty cardamom */
+    --maxw:820px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:19px;line-height:1.62;
+    font-optical-sizing:auto;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+  a{color:var(--indigo);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;}
+  a:hover{color:var(--miss);}
+
+  /* ---------- masthead ---------- */
+  header.masthead{padding:88px 0 56px;border-bottom:1px solid var(--rule);position:relative;}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--marigold);margin:0 0 26px;font-weight:500;
+  }
+  h1{
+    font-family:"Fraunces",serif;font-weight:900;font-size:clamp(40px,7.5vw,68px);
+    line-height:1.02;letter-spacing:-.015em;margin:0 0 6px;font-optical-sizing:auto;
+  }
+  h1 .sub{display:block;font-weight:400;font-style:italic;font-size:.44em;color:var(--indigo);letter-spacing:0;margin-top:14px;}
+  .rule-marigold{width:64px;height:3px;background:var(--marigold);margin:24px 0 0;border-radius:2px;}
+  .byline{font-family:"IBM Plex Mono",monospace;font-size:13.5px;color:var(--faint);margin-top:26px;line-height:1.9;}
+  .byline b{color:var(--ink);font-weight:600;}
+  .byline .lvl{color:var(--indigo);font-weight:600;}
+
+  /* ---------- teaser ---------- */
+  .teaser{margin:40px 0 0;}
+  .tagline{
+    font-family:"Fraunces",serif;font-style:italic;font-weight:400;
+    font-size:clamp(22px,3.4vw,29px);line-height:1.4;color:var(--ink);margin:0 0 26px;max-width:44ch;
+  }
+  .frame{border:1px solid var(--rule);border-radius:3px;background:#fff;overflow:hidden;}
+  .frame img{display:block;width:100%;height:auto;}
+  .slot{
+    border:1.5px dashed #CDB98F;border-radius:3px;
+    background:repeating-linear-gradient(45deg,#fff,#fff 12px,#FBF4E4 12px,#FBF4E4 24px);
+    min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:28px;color:var(--faint);font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.7;
+  }
+  .slot b{color:var(--miss);font-weight:600;}
+  figcaption{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--faint);margin-top:10px;line-height:1.6;}
+
+  /* ---------- sections ---------- */
+  section{padding:52px 0;border-bottom:1px solid var(--rule);}
+  .sec-no{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--marigold);letter-spacing:.12em;margin:0 0 10px;font-weight:500;}
+  .sec-no .dim{color:var(--faint);}
+  h2{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(26px,4vw,34px);line-height:1.12;letter-spacing:-.01em;margin:0 0 22px;}
+  h3{font-family:"Fraunces",serif;font-weight:600;font-size:21px;margin:34px 0 10px;letter-spacing:-.005em;}
+  p{margin:0 0 18px;}
+  .lead{font-size:21px;}
+  strong{font-weight:500;color:var(--ink);}
+  em{font-style:italic;}
+  code,.mono{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:#F3E9D4;padding:1px 6px;border-radius:3px;color:#5c4a2e;}
+
+  /* ---------- legend ---------- */
+  .legend{display:flex;gap:22px;flex-wrap:wrap;margin:6px 0 4px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--faint);}
+  .legend span{display:inline-flex;align-items:center;gap:8px;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .dot.hit{background:var(--hit);}
+  .dot.miss{background:var(--miss);}
+  .dot.marigold{background:var(--marigold);}
+
+  /* ---------- pipeline ---------- */
+  .pipe{margin:26px 0 8px;background:#fff;border:1px solid var(--rule);border-radius:4px;padding:22px 18px;}
+  .pipe svg{width:100%;height:auto;display:block;}
+
+  /* ---------- tables ---------- */
+  .tbl{width:100%;border-collapse:collapse;margin:20px 0 6px;font-size:16px;}
+  .tbl th,.tbl td{border:1px solid var(--rule);padding:11px 13px;text-align:left;vertical-align:top;line-height:1.5;}
+  .tbl th{background:#F5ECD8;font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.03em;font-weight:600;text-transform:uppercase;color:#6a5836;}
+  .tbl td:first-child{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--indigo);}
+  .tbl .choice{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink);}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+  .chip.hit{background:#E9F0DF;color:var(--hit);}
+  .chip.miss{background:#F7E2DC;color:var(--miss);}
+  .chip.tbd{background:#EEE7D6;color:var(--faint);}
+  .chip.a{background:#E9F0DF;color:var(--hit);}
+  .chip.b{background:#E2E5F1;color:var(--indigo);}
+
+  /* ---------- code block ---------- */
+  pre{background:#241C13;color:#F1E7D3;border-radius:5px;padding:18px 20px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.65;margin:20px 0;}
+  pre .c{color:#9d8f74;}
+  pre .k{color:#E0A94A;}
+  pre .s{color:#A9C48C;}
+
+  /* ---------- answer card (chat prototype) ---------- */
+  .answer{border:1px solid var(--rule);border-radius:6px;background:#fff;overflow:hidden;margin:22px 0;}
+  .answer .q{background:#F5ECD8;padding:14px 20px;font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--indigo);border-bottom:1px solid var(--rule);}
+  .answer .q b{color:var(--faint);font-weight:500;}
+  .answer .a{padding:18px 20px;font-size:17px;}
+  .answer .a .fn{font-family:"IBM Plex Mono",monospace;font-size:.82em;background:#E9F0DF;color:var(--hit);padding:1px 6px;border-radius:3px;}
+  .answer .imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;padding:0 20px 20px;}
+  .answer .imgs .slot{min-height:110px;font-size:11px;padding:12px;}
+
+  /* ---------- dossier ---------- */
+  .dossier{display:grid;gap:22px;margin-top:26px;}
+  .case{border:1px solid var(--rule);border-left:4px solid var(--miss);border-radius:4px;background:#fff;padding:22px 24px;}
+  .case .cid{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--faint);letter-spacing:.06em;}
+  .case h3{margin:6px 0 4px;font-size:19px;}
+  .case .tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:#F7E2DC;color:var(--miss);margin-bottom:14px;}
+  .verdict{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden;margin:12px 0 16px;}
+  .verdict>div{padding:11px 14px;font-size:15px;}
+  .verdict .said{background:#FBEDE8;border-right:1px solid var(--rule);}
+  .verdict .truth{background:#EEF2E6;}
+  .verdict .lbl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px;}
+  .verdict .said .lbl{color:var(--miss);}
+  .verdict .truth .lbl{color:var(--hit);}
+  .case .why{font-size:16.5px;margin:0;}
+  .case .why b{font-weight:600;color:var(--indigo);}
+
+  /* ---------- callout ---------- */
+  .note{border-left:3px solid var(--marigold);background:#FaF2DE;padding:16px 20px;margin:24px 0;border-radius:0 4px 4px 0;font-size:17px;}
+  .note .hd{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--marigold);margin-bottom:6px;font-weight:600;}
+
+  /* ---------- fill markers ---------- */
+  .fill{border:1.5px dashed var(--miss);border-radius:4px;background:#FBEDE7;padding:16px 20px;margin:22px 0;font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.75;color:#7a3320;}
+  .fill b{color:var(--miss);}
+
+  /* ---------- gallery ---------- */
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:16px 0;}
+  .gallery .slot{min-height:130px;font-size:11px;padding:14px;}
+
+  /* ---------- references ---------- */
+  ol.refs{font-family:"Newsreader",serif;font-size:16px;line-height:1.7;padding-left:22px;}
+  ol.refs li{margin-bottom:12px;}
+  .refs .mono{background:none;padding:0;color:var(--faint);}
+
+  footer{padding:44px 0 70px;color:var(--faint);font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.8;}
+
+  @media (max-width:560px){
+    body{font-size:18px;}
+    .verdict{grid-template-columns:1fr;}
+    .verdict .said{border-right:none;border-bottom:1px solid var(--rule);}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Seeing Machines · Semester final · CompSci for Designers 2</p>
+    <h1>Who's Eating?
+      <span class="sub">a companion for 254 of my own food photos — it searches them, answers questions about them, and gets caught the moment it sees something that isn't there</span>
+    </h1>
+    <div class="rule-marigold"></div>
+    <div class="byline">
+      <b>Aditi</b> &nbsp;·&nbsp; <span class="lvl">Level&nbsp;2 — The&nbsp;Companion</span><br />
+      CompSci for Designers 2 &nbsp;·&nbsp; MA Design for Digital Futures<br />
+      TH Nürnberg, Fakultät Design &nbsp;·&nbsp; Summer 2026<br />
+      Instructors: Moritz Schwind, Christopher Kopic
+    </div>
+
+    <!-- TEASER + ONE-LINE TAGLINE -->
+    <div class="teaser">
+      <p class="tagline">I know this archive by heart — which is exactly why I notice the moment the machine sees a chili that's really just a tattoo.</p>
+      <figure style="margin:0;">
+        <div class="frame">
+          <div class="slot"><span><b>[ TEASER IMAGE ]</b><br />drop a contact sheet of the corpus here<br />(a grid of ~20 thumbnails works nicely)<br />swap this <code>.slot</code> div for <code>&lt;img src="assets/teaser.jpg"&gt;</code></span></div>
+        </div>
+        <figcaption>A slice of the archive — home kitchens in India and Germany, restaurant plates, drinks, desserts, half-made things, and the fakes I planted on purpose.</figcaption>
+      </figure>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ABSTRACT -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ Abstract</p>
+    <h2>Two ways of looking at the same photos</h2>
+    <p class="lead">Who's Eating? lets me search and ask questions about 254 food photos I've taken over the years. It looks at them two different ways at once. One way (Route&nbsp;A) reads the pixels straight, using SigLIP to turn each image into a vector I can match a text query against. The other way (Route&nbsp;B) first asks a vision-language model, Gemma&nbsp;3&nbsp;4B, to <em>write down</em> what each photo shows in a fixed format, then searches over that text. When I ask a question, the system pulls the closest images, hands their descriptions to the model, and answers — showing me the photos it leaned on.</p>
+    <p>The reason this archive works for the assignment is simple: I took every picture, so I always know when the answer is wrong. I know which curry is Hyderabadi and which is just "Indian," which shot is a real macaron and which is a candle shaped like one. None of that is in the pixels. The <strong>caption format was the big design decision here</strong>, and I built it specifically to make the gap between what I know and what the model can see easy to see, compare, and pick apart.</p>
+    <div class="legend">
+      <span><i class="dot hit"></i> a hit — it saw what's actually there</span>
+      <span><i class="dot miss"></i> a mis-seeing — it saw something else</span>
+      <span><i class="dot marigold"></i> a decision I made</span>
+    </div>
+  </div>
+</section>
+
+<!-- MOTIVATION & CORPUS STATEMENT -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 1 · Motivation &amp; corpus statement</p>
+    <h2>An archive I can fact-check from memory</h2>
+    <p>Most people who test a retrieval system don't know the data going in, so they can't tell a good answer from a confident wrong one. I wanted the opposite. I picked a set of images I know so well that a hallucination jumps out at me instantly. Food photos are perfect for it — they're crammed with detail (ingredients, textures, plating), they carry cultural specificity that models love to guess at, and they let me set traps.</p>
+
+    <h3>What's in the collection</h3>
+    <p>254 photos I shot across two countries: home-cooked meals, restaurant food, drinks, desserts, and plenty of raw or half-made food. The India/Germany split isn't incidental — it's where the model's habit of guessing a cuisine becomes something I can actually catch and write down.</p>
+
+    <h3>Why there are fakes in here</h3>
+    <p>Mixed in with the real meals are <strong>food lookalikes and food costumes</strong> — things that look like food but aren't: a taco costume, candles moulded as macarons, a little ceramic keychain shaped like a snack. I didn't include these by accident. They're the tripwires. They're the exact spot where reading the pixels and reading the photo <em>have</em> to come apart, because the difference between "food" and "a picture that refers to food" lives in what you know, not in the frame. Both the caption format (§3) and the dossier (§8) are built around them.</p>
+
+    <div class="note">
+      <div class="hd">The premise, in one line</div>
+      Everything I know about a photo's origin and intent — that a shape is a tattoo, that a macaron is a candle — isn't recoverable from the pixels. So the whole project is really about giving the machine somewhere to write down what it <em>can</em> see, which leaves the part only I know standing out in relief.
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH + PIPELINE DIAGRAM -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 2 · Approach</p>
+    <h2>How the thing is built</h2>
+    <p>Route&nbsp;A is just my Level&nbsp;1 SigLIP search, reused as-is. Route&nbsp;B is the new part: caption every image, embed the captions, search over those. A small keyword-boost sits on top of Route&nbsp;B. Both routes then feed the exact same answering step — so which route I use changes <em>what gets found</em>, never <em>how the answer reads</em>.</p>
+    <div class="pipe">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace">
+        <defs>
+          <marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#34407A"/></marker>
+          <style>
+            .box{fill:#fff;stroke:#ECE1CC;stroke-width:1.5;}
+            .lab{font-size:12px;fill:#241C13;}
+            .labs{font-size:10.5px;fill:#8B7A61;}
+            .rt{font-size:11px;font-weight:600;}
+            .ln{stroke:#34407A;stroke-width:1.6;fill:none;}
+          </style>
+        </defs>
+        <rect class="box" x="14" y="150" rx="4" width="120" height="58"/>
+        <text class="lab" x="74" y="175" text-anchor="middle">254 photos</text>
+        <text class="labs" x="74" y="192" text-anchor="middle">the corpus</text>
+        <rect class="box" x="210" y="40" rx="4" width="180" height="64" stroke="#4B6B2E"/>
+        <text class="rt" x="300" y="60" text-anchor="middle" fill="#4B6B2E">ROUTE A</text>
+        <text class="lab" x="300" y="78" text-anchor="middle">SigLIP image encoder</text>
+        <text class="labs" x="300" y="94" text-anchor="middle">pixels → image embeddings</text>
+        <rect class="box" x="210" y="150" rx="4" width="180" height="64"/>
+        <text class="rt" x="300" y="170" text-anchor="middle" fill="#34407A">ROUTE B</text>
+        <text class="lab" x="300" y="188" text-anchor="middle">Gemma 3 4B (4-bit)</text>
+        <text class="labs" x="300" y="204" text-anchor="middle">→ structured caption</text>
+        <rect class="box" x="210" y="252" rx="4" width="180" height="58"/>
+        <text class="lab" x="300" y="276" text-anchor="middle">10-field schema</text>
+        <text class="labs" x="300" y="292" text-anchor="middle">SigLIP text encoder</text>
+        <rect class="box" x="470" y="120" rx="4" width="170" height="120"/>
+        <text class="lab" x="555" y="150" text-anchor="middle">retrieval</text>
+        <text class="labs" x="555" y="170" text-anchor="middle">cosine top-k</text>
+        <text class="labs" x="555" y="192" text-anchor="middle">A · B · hybrid</text>
+        <text class="labs" x="555" y="214" text-anchor="middle">(+ keyword boost)</text>
+        <rect class="box" x="710" y="130" rx="4" width="156" height="100"/>
+        <text class="lab" x="788" y="160" text-anchor="middle">grounded</text>
+        <text class="lab" x="788" y="178" text-anchor="middle">generation</text>
+        <text class="labs" x="788" y="200" text-anchor="middle">answer + images</text>
+        <path class="ln" d="M134,168 C170,150 175,80 208,72" marker-end="url(#arw)"/>
+        <path class="ln" d="M134,182 L208,182" marker-end="url(#arw)"/>
+        <path class="ln" d="M300,214 L300,250" marker-end="url(#arw)"/>
+        <path class="ln" d="M390,72 C430,80 440,140 468,150" marker-end="url(#arw)"/>
+        <path class="ln" d="M390,281 C430,270 440,210 468,205" marker-end="url(#arw)"/>
+        <path class="ln" d="M640,180 L708,180" marker-end="url(#arw)"/>
+      </svg>
+    </div>
+    <figcaption>Here's the thing I didn't expect: both routes end up leaning on a SigLIP encoder, because Gemma&nbsp;3's own vision tower is a SigLIP-family model. So §5 isn't really "two different eyes" — it's the same eye, once looking at pixels directly and once looking at pixels after they've been turned into words.</figcaption>
+    <h3>Grounding, and not re-running the expensive bit</h3>
+    <p>When it answers, the model is told to use only the descriptions it's handed, to name images by filename, and to just say so when the descriptions don't cover the question. Captioning runs greedily so it's repeatable, and every batch gets written to Drive — captioning all 254 images is a one-time 20–45&nbsp;minute GPU job, and a dropped session shouldn't cost me a thing.</p>
+  </div>
+</section>
+
+<!-- DESIGN DECISION: SCHEMA + PROMPT -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 3 · Design decision <span class="dim">— the caption schema &amp; prompt</span></p>
+    <h2>Deciding what a caption should even contain</h2>
+    <p>There's no textbook "caption format for RAG" I could copy, so this was mine to figure out. I worked backwards from three things I knew I'd need later: something to <strong>search over</strong>, something that lets me <strong>compare the two routes</strong> fairly, and something I can <strong>audit when it goes wrong</strong>. That gave me ten fields:</p>
+    <pre><span class="c"># what I ask the model to fill in for every photo</span>
+one_sentence_summary     <span class="c"># plain sentence, 25 words or fewer</span>
+dish_or_subject          <span class="c"># the dish name if it knows it, else what's shown</span>
+dish_category            <span class="c"># pick one from a fixed list → lets me boost exact matches</span>
+depicts_real_food        <span class="c"># real_food | food_lookalike | not_food  ← the tripwire</span>
+cuisine_or_origin        <span class="c"># free text; 'unknown' is fine, guessing is not</span>
+preparation_stage        <span class="c"># raw | in_progress | ready_to_eat | not_applicable</span>
+setting                  <span class="c"># home | restaurant | street | studio_or_staged | unknown</span>
+key_ingredients_visible  <span class="c"># a list — only what you can SEE, not what you assume</span>
+colors_and_textures      <span class="c"># adjectives, because they're good to search on</span>
+confidence_notes         <span class="c"># what it's unsure about — my audit trail</span></pre>
+
+    <h3>Three choices I'll stand behind</h3>
+    <table class="tbl">
+      <thead><tr><th>Field</th><th>What I chose</th><th>Why, and not the obvious thing</th></tr></thead>
+      <tbody>
+        <tr><td>cuisine_or_origin</td><td class="choice">free text,<br />"unknown" allowed</td><td>A fixed list built today would flatten an archive that runs from India to Germany. <em>Franconian</em> vs. just <em>German</em>, <em>Hyderabadi</em> vs. just <em>Indian</em> — that's exactly the detail worth keeping. Free text also lets me watch the model guess, which a dropdown would quietly hide.</td></tr>
+        <tr><td>depicts_real_food</td><td class="choice">three values:<br />real_food /<br />food_lookalike /<br />not_food</td><td>This is the whole trap for the fake shots. A yes/no boolean throws away the interesting middle — costumes, food-shaped objects — by lumping it in with everything else. Three values let me actually <em>file</em> the failure in the dossier.</td></tr>
+        <tr><td>preparation_stage</td><td class="choice">kept it,<br />four values</td><td>I deliberately shot raw and half-made food. Dropping this field would throw away a part of the archive I curated on purpose — and a cheap thing to search on ("dough before baking").</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The prompt — and why it's worded the way it is</h3>
+    <p>The format only holds if the prompt makes it hold. I ask Gemma for JSON and nothing else, with exactly these fields. Four of the rules are doing the real work:</p>
+    <pre>You are describing one photograph from a personal food-photography archive.
+Return ONLY a JSON object — no markdown fences, no commentary — with exactly
+these fields: { one_sentence_summary, dish_or_subject, dish_category,
+depicts_real_food, cuisine_or_origin, preparation_stage, setting,
+key_ingredients_visible, colors_and_textures, confidence_notes }
+
+<span class="k">Rules:</span>
+<span class="s">- "food_lookalike" means something that resembles food but isn't edible:</span>
+<span class="s">  a costume, a toy, a food-shaped object.</span>
+<span class="s">- If people, packaging, or non-food objects fill the frame, look again at</span>
+<span class="s">  depicts_real_food before you answer.</span>
+<span class="s">- dish_category must be EXACTLY one value from the list — don't invent one.</span>
+<span class="s">- Describe only what you can SEE. Don't invent ingredients, places, occasions.</span></pre>
+    <table class="tbl">
+      <thead><tr><th>Rule</th><th>What it's protecting me from</th></tr></thead>
+      <tbody>
+        <tr><td class="choice">JSON only,<br />exact fields</td><td>Turns the output into a contract. When the model breaks it, my parser catches the failure and logs it — so a broken caption becomes evidence in the dossier instead of quietly rotting my data.</td></tr>
+        <tr><td class="choice">spell out<br />food_lookalike</td><td>The tripwire field is useless without a definition. Naming "costume / toy / food-shaped object" gives the model a target — and shows me, later, exactly where its idea of the category and mine drift apart.</td></tr>
+        <tr><td class="choice">only what<br />you can SEE</td><td>Small models love to infer ingredients from the dish name — "it's a biryani, so, saffron." Forcing visible-only keeps the ingredient list honest, and when it slips anyway, that slip is a documented hallucination.</td></tr>
+        <tr><td class="choice">"unknown" beats<br />a guess</td><td>This turns the model's confidence into a choice I can read. A guess written as fact is invisible; a guess written where "unknown" was on offer is a behaviour I can point at and analyse.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>One small change that fixed retrieval</h3>
+    <p>When I flatten a caption into a string to search over, I put the <strong>discriminating words first</strong> — category, dish name, visible ingredients, textures — and shove the prose to the end. SigLIP squashes the whole string into one vector, and the front words pull hardest. I leave <code>confidence_notes</code> out of the search string entirely; it's hedging for my audit trail, not a signal. Reordering this alone cleared up a drift where wordy captions kept dragging in the wrong photos.</p>
+  </div>
+</section>
+
+<!-- RESULTS: RETRIEVAL ATLAS -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 4 · Results — retrieval atlas <span class="dim">— ten queries, wins and misses</span></p>
+    <h2>Reading the embedding space out loud</h2>
+    <p>Ten queries against the archive, each one read back in embedding terms: <em>why</em> did these particular photos come up? The failures are the good bit — they're where similarity grabbed a colour or a shape instead of the meaning I actually asked for.</p>
+    <div class="fill"><b>▸ TO FILL — from my search() runs.</b> Set the <span style="color:var(--hit)">hit</span>/<span style="color:var(--miss)">miss</span> chip per query and write the one-line reason from what really came back. The guess in the last column is a starting point — I'll correct it against the results, and drop a thumbnail strip under the 2–3 most telling rows.</div>
+    <table class="tbl">
+      <thead><tr><th style="width:34%">Query</th><th style="width:10%">Verdict</th><th>Why these came up (in embedding terms)</th></tr></thead>
+      <tbody>
+        <tr><td class="choice">fresh green salad with raw vegetables</td><td><span class="chip tbd">TBD</span></td><td>Heavy on colour and texture — SigLIP should cluster tight on green and leafy. I expect a clean hit here.</td></tr>
+        <tr><td class="choice">South Indian breakfast</td><td><span class="chip tbd">TBD</span></td><td>A cuisine name with almost no consistent look (idli, dosa, upma all differ). Tests whether pixels alone carry <em>cuisine</em> — probably where Route B pulls ahead.</td></tr>
+        <tr><td class="choice">dough or batter before cooking</td><td><span class="chip tbd">TBD</span></td><td>Prep-stage query. Pale, smooth surfaces — easy to confuse with yoghurt or cream, so watch for that.</td></tr>
+        <tr><td class="choice">something crunchy and fried</td><td><span class="chip tbd">TBD</span></td><td>Texture-led, golden and high-contrast. Should hit — but I bet roasted (not fried) things sneak in on colour alone.</td></tr>
+        <tr><td class="choice">a warm orange curry</td><td><span class="chip tbd">TBD</span></td><td>Colour dominates. This probably drags in anything orange — soup, dal, maybe a mango drink. A textbook colour-over-meaning miss to document.</td></tr>
+        <tr><td class="choice">dessert on a white plate</td><td><span class="chip tbd">TBD</span></td><td>Two things at once (category + setting). Does the white plate distract from the dessert?</td></tr>
+        <tr><td class="choice">a cold drink with ice</td><td><span class="chip tbd">TBD</span></td><td>Glass and transparency — reflective, see-through regions. Curious whether SigLIP handles glassware or just latches onto the background.</td></tr>
+        <tr><td class="choice">street food stall</td><td><span class="chip tbd">TBD</span></td><td>A scene, not a dish. Rides on background cues (setting=street) — a good check of whether it reads context or only the plate.</td></tr>
+        <tr><td class="choice">a person dressed as food</td><td><span class="chip tbd">TBD</span></td><td>A trick shot. Does the costume outrank real food? Tells me whether food-shape alone is steering the match.</td></tr>
+        <tr><td class="choice">not food, just looks like it</td><td><span class="chip tbd">TBD</span></td><td>A negation, and abstract — SigLIP has basically no grip on "not." I expect this to fail, and that failure is an honest limit worth showing.</td></tr>
+      </tbody>
+    </table>
+    <div class="gallery">
+      <div class="slot">[ telling row ]<br />top-1</div><div class="slot">top-2</div><div class="slot">top-3</div><div class="slot">top-4</div>
+    </div>
+    <figcaption>Swap in thumbnails for 2–3 rows above — ideally one clean hit next to one colour-over-meaning miss.</figcaption>
+  </div>
+</section>
+
+<!-- RESULTS: TWO ROUTES -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 5 · Results — two routes compared <span class="dim">— pixels vs. words</span></p>
+    <h2>When do the pixels win, and when do the words?</h2>
+    <p>Five queries run through both routes, picked because I think they'll <em>split</em> the two. Look-and-feel queries should go to Route&nbsp;A; name-and-knowledge queries should go to Route&nbsp;B; and the trick-shot query is there to see which route gets fooled.</p>
+    <div class="fill"><b>▸ TO FILL — from my §9 run.</b> Fill the <b>Observed</b> column with whichever route ranked the right image higher, plus the <code>overlap: n/5</code> line for each query. My prediction's already there — I'll confirm it or eat my words.</div>
+    <table class="tbl">
+      <thead><tr><th>Query</th><th>Tests</th><th>My guess</th><th>Observed</th></tr></thead>
+      <tbody>
+        <tr><td class="choice">fresh green salad with raw vegetables</td><td>colour / texture</td><td><span class="chip a">Route A</span></td><td>—</td></tr>
+        <tr><td class="choice">crunchy fried food</td><td>texture</td><td><span class="chip a">Route A</span></td><td>—</td></tr>
+        <tr><td class="choice">South Indian breakfast</td><td>cuisine name</td><td><span class="chip b">Route B</span></td><td>—</td></tr>
+        <tr><td class="choice">dough or batter before cooking</td><td>prep stage</td><td><span class="chip b">Route B</span></td><td>—</td></tr>
+        <tr><td class="choice">a person dressed as food</td><td>trick shot</td><td><span class="chip tbd">who's fooled?</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <h3>The tofu case — where a dumb keyword match saves the day</h3>
+    <p>Caption-embedding search flat-out missed a tofu salad: the whole-string vector let "salad" drown out "tofu." So I added a small hybrid — SigLIP similarity weighted by <code>alpha</code>, plus the fraction of my query words that literally show up in the caption — scored across <em>every</em> image, so a plain "tofu" match can haul the photo back into view. It's beyond what Level&nbsp;2 asks for, but I kept it because it shows the exact seam where embeddings fail and a literal word match rescues them.</p>
+    <div class="fill"><b>▸ TO FILL — before / after.</b> Paste the ranked list from <code>caption_search("Salad with grilled tofu")</code> next to <code>hybrid_search(...)</code> so you can watch the right file climb.</div>
+  </div>
+</section>
+
+<!-- RESULTS: THE COMPANION ANSWERING -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 6 · Results — the companion answering <span class="dim">— retrieval + grounded generation</span></p>
+    <h2>Actually talking to the archive</h2>
+    <p>This is the whole loop end to end: a question pulls some images, their captions become the only thing the model is allowed to use, and the answer names the photos by filename with the pictures sitting right next to it. You can see the point of grounding best when it <em>fails</em> gracefully — when the captions don't hold the answer, the model is meant to say so instead of making something up.</p>
+    <div class="answer">
+      <div class="q"><b>Q:</b> Which photos show street food, and where from?</div>
+      <div class="a"><b>▸ TO FILL</b> — paste the model's real answer here. It should read something like: "Two of these are street food — <span class="fn">IMG_xxxx.jpg</span> (setting: street, South Indian) and <span class="fn">IMG_yyyy.jpg</span> …", naming files and staying inside the captions it was given.</div>
+      <div class="imgs">
+        <div class="slot">cited image 1<br />filename + score</div>
+        <div class="slot">cited image 2</div>
+        <div class="slot">cited image 3</div>
+      </div>
+    </div>
+    <p>I'll add a second card for a question where retrieval comes up short — the model politely refusing to go past its context is honestly stronger proof that grounding works than any clean success.</p>
+  </div>
+</section>
+
+<!-- RESULTS: MIS-SEEING DOSSIER -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 7 · Results — mis-seeing dossier</p>
+    <h2>Three tripwires, and what they actually caught</h2>
+    <p>The <code>depicts_real_food</code> field gets checked automatically against my own notes on which shots are fakes; any disagreement lands in the dossier. Here's the twist: only one of these three is really the model failing to <em>see</em>. The other two caught something I didn't expect — that <strong>my own schema wasn't fully decided</strong>. That's a design finding, not a model bug.</p>
+    <div class="dossier">
+      <div class="case">
+        <div class="cid">Copy of 20231215_192748.jpg</div>
+        <span class="tag">use–mention slip</span>
+        <h3>A chili that's really a tattoo</h3>
+        <div class="verdict">
+          <div class="said"><span class="lbl">Model said</span>real_food — "a chili pepper"</div>
+          <div class="truth"><span class="lbl">Actually</span>not_food — a chili tattooed on skin</div>
+        </div>
+        <p class="why"><b>Why it happened:</b> the model isn't wrong about the object — it really is a chili. It's wrong about what that <em>means</em>. It collapses "a picture that refers to food" into "food is here." Its training pairs food words with food-photo pixels and barely ever sees food drawn on skin, so the classic chili shape trips the food class before the skin-and-ink context can talk it back down.</p>
+      </div>
+      <div class="case" style="border-left-color:var(--indigo)">
+        <div class="cid">Copy of 20240814_135828.jpg</div>
+        <span class="tag" style="background:#E2E5F1;color:var(--indigo)">my definition, not its eyes</span>
+        <h3>Candles moulded as macarons</h3>
+        <div class="verdict">
+          <div class="said"><span class="lbl">Model said</span>not_food — "decorative candles"</div>
+          <div class="truth"><span class="lbl">My label</span>food_lookalike</div>
+        </div>
+        <p class="why"><b>This isn't a seeing problem.</b> The model's right — the candles aren't edible. My <code>food_lookalike</code> tag was carrying intent — <em>a non-food thing pretending to be food</em> — that just isn't in the pixels. The model has no way to read "this is imitating food on purpose." So the disagreement is really pointing at a fuzzy spot in <em>my</em> schema, not a fault in its vision.</p>
+      </div>
+      <div class="case" style="border-left-color:var(--indigo)">
+        <div class="cid">IMG-20181226-WA0008.jpg</div>
+        <span class="tag" style="background:#E2E5F1;color:var(--indigo)">my own inconsistency</span>
+        <h3>A ceramic food keychain</h3>
+        <div class="verdict">
+          <div class="said"><span class="lbl">Model said</span>food_lookalike — it mimics food</div>
+          <div class="truth"><span class="lbl">My label</span>not_food</div>
+        </div>
+        <p class="why"><b>The model reasons this one out fine</b> — the ceramic thing imitates food, so, food_lookalike. The problem is that I called this <code>not_food</code> while calling the candles <code>food_lookalike</code>, for the exact same reason. Put the two side by side and it's obvious my <code>not_food</code> / <code>food_lookalike</code> line was never properly drawn. That's as much a finding about my schema as about the model.</p>
+      </div>
+    </div>
+    <div class="note">
+      <div class="hd">The finding under the finding</div>
+      Cases 2 and 3 aren't me being sloppy — they're a distinction the model simply can't make, and one I hadn't finished making either. There are two fair rules and I kept flip-flopping between them: a <em>realism</em> rule (how convincingly does it fake food?) and a <em>reference</em> rule (does it point at food at all?). Naming that split is the honest fix. A model with no read on intent was never going to settle it for me.
+    </div>
+  </div>
+</section>
+
+<!-- REFLECTION -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 8 · Project reflection</p>
+    <h2>What I actually took away from this</h2>
+    <p>The best surprise was that the schema turned into a mirror. I set out to design fields so the model could describe my food — and ended up finding the places where <em>my own</em> definitions didn't have an answer. The <code>food_lookalike</code> boundary is the clearest one: what looked like the machine's mistake was really a question I'd never sat down and decided.</p>
+    <p>The route comparison changed how I think about the two paths too. They're not really rivals — they fail in <em>opposite</em> directions. Route&nbsp;A keeps hold of texture and colour that no caption fully captures; Route&nbsp;B keeps names and origins that no single pixel carries. And the fact that both sit on a SigLIP backbone and still disagree is the part I keep coming back to: describing an image and then embedding the words is a genuinely different move from embedding the image. It runs the picture through language, and language keeps some things and quietly drops others.</p>
+  </div>
+</section>
+
+<!-- LIMITATIONS -->
+<section>
+  <div class="wrap">
+    <p class="sec-no">§ 9 · Limitations</p>
+    <h2>What this can't do (yet)</h2>
+    <p>The captions are only ever one greedy pass of a 4-bit 4B model. It still invents ingredients it's inferred from a dish name even after I've told it not to, and it states cuisine guesses with a confidence they haven't earned. Searching over a single vector per caption is coarse; the keyword boost patches it but bluntly — literal word overlap, no synonyms. Answers come from captions, so any mistake upstream slides silently into the reply. And the dossier is small on purpose: three chosen tripwires, not a survey. It shows <em>kinds</em> of mis-seeing, not how often they happen.</p>
+    <p>This is a Level&nbsp;2 system, and it stops where Level&nbsp;2 stops. It doesn't fuse the two routes into one scored number, doesn't pass images back into the model at answer time, and doesn't measure precision@k across routes. Those are the Level&nbsp;3 questions — and honestly, they're where I'd go next.</p>
+  </div>
+</section>
+
+<!-- SOURCES & REFERENCES -->
+<section style="border-bottom:none;">
+  <div class="wrap">
+    <p class="sec-no">§ 10 · Sources &amp; references</p>
+    <h2>References</h2>
+    <ol class="refs">
+      <li>Zhai, X., Mustafa, B., Kolesnikov, A., &amp; Beyer, L. (2023). <em>Sigmoid Loss for Language Image Pre-Training (SigLIP)</em>. <span class="mono">google/siglip-so400m-patch14-384</span>.</li>
+      <li>Gemma Team, Google DeepMind (2025). <em>Gemma 3 Technical Report</em> — the 4B+ variants use a SigLIP-family vision encoder. <span class="mono">google/gemma-3-4b-it</span>.</li>
+      <li>Radford, A., et al. (2021). <em>Learning Transferable Visual Models from Natural Language Supervision (CLIP)</em>.</li>
+      <li>Dettmers, T., et al. (2023). <em>QLoRA / 4-bit quantization</em> — bitsandbytes NF4 loading, used for T4 compatibility.</li>
+      <li>Course materials, CompSci for Designers 2, TH Nürnberg — the Level&nbsp;1 starter notebook (SigLIP embedding loop, reused unchanged).</li>
+      <li>Page-format references: <span class="mono">dreambooth.github.io</span> and <span class="mono">ricardomehl.github.io/publication/LatentWorld_Documentation</span>.</li>
+    </ol>
+    <div class="fill" style="margin-top:26px;"><b>▸ Before I publish:</b> double-check every image on this page is one I'm allowed to share publicly — GitHub Pages on a free account needs a <b>public</b> repo. Swap any private shot for one from the shareable set, and keep the full 254 images (or a ≥20-image sample + a description of the rest) in the submission bundle instead of the repo if needed.</div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Who's Eating? · Level 2 — The Companion · Aditi<br />
+    MA Design for Digital Futures · CompSci for Designers 2 · TH Nürnberg · Summer 2026<br />
+    Built with SigLIP + Gemma 3 4B · Written in the spirit of: a failure you can see clearly beats a success you can't.
+  </div>
+</footer>
+
+</body>
+</html>
